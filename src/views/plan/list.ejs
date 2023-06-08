@@ -1,0 +1,45 @@
+<%- contentFor('title') %> برنامه ها - <%- contentFor('body') %>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-6">
+      <h2 class="my-4">برنامه ها</h2>
+    </div>
+    <div class="col-6">
+      <div class="text-left">
+        <a href="/plan/create" class="btn btn-primary">افزودن برنامه جدید</a>
+      </div>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>نام</th>
+        <th>قیمت</th>
+        <th>مدت اعتبار</th>
+        <th>تعداد جلسات</th>
+        <th>تاریخ ساخت</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% plans.forEach((plan) => { %>
+      <tr>
+        <td><%= plan.name || '_' %></td>
+        <td><%= plan.price %></td>
+        <td><%= plan.duration %></td>
+        <td><%= plan.sessions %></td>
+        <td><%= plan.createdAt.toLocaleString('fa-IR') %></td>
+        <td>
+          <form
+            action="/plan/delete/<%= plan._id %>"
+            method="POST"
+            onsubmit="return confirm('آیا میخواهید این طرح را حذف کنید؟')"
+          >
+            <button type="submit" class="btn btn-danger">حذف</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

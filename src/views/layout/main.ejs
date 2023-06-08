@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%-defineContent('title')%>باشگاه لیان</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <%-defineContent('header')%>
+    <style>
+      * {
+        direction: rtl !important;
+        text-align: right;
+      }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include('../partials/header') %>
+    <div class="container mt-5"><%- body %></div>
+    <script src="/static/js/util.js"></script>
+    <script src="/static/js/jquery.slim.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </body>
+</html>

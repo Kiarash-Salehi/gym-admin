@@ -1,0 +1,68 @@
+<%- contentFor('title') %> افزودن برنامه برای کاربر - <%- contentFor('header')
+%>
+<link
+  rel="stylesheet"
+  href="/static/persian-datepicker/css/persianDatepicker-default.css"
+/>
+<script defer src="/static/persian-date/dist/persian-date.min.js"></script>
+<script defer src="/static/persian-datepicker/js/jquery-1.10.1.min.js"></script>
+<script
+  defer
+  src="/static/persian-datepicker/js/persianDatepicker.min.js"
+></script>
+<script>
+  var plansData = <%- JSON.stringify(plans) %>;
+</script>
+<script defer src="/static/js/persianDatePicker-util.js"></script>
+<%- contentFor('body') %>
+<div class="container">
+  <h2 class="my-4">افزودن برنامه برای کاربر</h2>
+
+  <form action="/member/add-plan/<%= member._id %>" method="POST">
+    <div class="form-group">
+      <label for="plan">انتخاب برنامه</label>
+      <select id="plan" name="plan" class="form-control">
+        <% plans.forEach((plan) => { %>
+        <option value="<%= plan._id %>">
+          <%= plan.name ? plan.name + ' - ' : '' %><%= plan.sessions %> - <%=
+          plan.price.toLocaleString() %>
+        </option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="startShow">تاریخ شروع</label>
+      <input
+        type="text"
+        id="startShow"
+        name="startShow"
+        class="form-control"
+        autocomplete="off"
+        readonly
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="endShow">تاریخ پایان</label>
+      <input
+        type="text"
+        id="endShow"
+        name="endShow"
+        class="form-control"
+        autocomplete="off"
+        readonly
+      />
+    </div>
+    <input
+      type="number"
+      id="remainingSessions"
+      name="remainingSessions"
+      value="<%= plans[0].sessions %>"
+      hidden
+      required
+    />
+    <input type="datetime" id="start" name="start" hidden required />
+    <input type="datetime" id="end" name="end" hidden required />
+    <button type="submit" class="btn btn-primary">افزودن برنامه</button>
+  </form>
+</div>

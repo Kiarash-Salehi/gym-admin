@@ -1,0 +1,65 @@
+<%- contentFor('title') %> لیست اعضا - <%- contentFor('body') %>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-6">
+      <h2 class="my-4">لیست اعضا</h2>
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col text-left">
+          <a href="/member/create" class="btn btn-primary">افزودن عضو جدید</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="mb-4" action="/member/list" method="GET">
+    <div class="form-row align-items-end">
+      <div class="col-md-6 col-lg-4 mb-2">
+        <label for="filter">فیلتر بر اساس نام یا شماره تلفن</label>
+        <input
+          type="text"
+          class="form-control"
+          id="filter"
+          name="filter"
+          placeholder="نام یا شماره تلفن را وارد کنید"
+          value="<%= filter || '' %>"
+        />
+      </div>
+      <div class="col-auto mb-2">
+        <button type="submit" class="btn btn-primary">اعمال فیلتر</button>
+      </div>
+    </div>
+  </form>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>نام</th>
+        <th>شماره تلفن</th>
+        <th>جلسات باقی‌مانده</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% members.forEach(function(member) { %>
+      <tr>
+        <td><%= member.firstName %> <%= member.lastName %></td>
+        <td><%= member.phoneNumber %></td>
+        <td><%= getRemainingSessions(member) %></td>
+        <td>
+          <a href="/member/one/<%= member._id %>" class="btn btn-primary"
+            >مشاهده</a
+          >
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<% function getRemainingSessions(member) { if (member?.plans &&
+member?.plans?.length > 0) { const currentPlan = member.plans.find((plan) => {
+const now = new Date(); return plan.start <= now && plan.end >= now; }); const
+remainingSessions = currentPlan ? currentPlan.remainingSessions : 0; // comment
+return remainingSessions; } else { return 0; } } %>

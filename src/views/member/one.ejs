@@ -1,0 +1,98 @@
+<%- contentFor('title') %> اطلاعات کاربر - <%- contentFor('body') %>
+<div class="container">
+  <h2 class="my-4">اطلاعات عضو</h2>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4>نام و نام خانوادگی</h4>
+      <p><%= member.firstName %> <%= member.lastName %></p>
+    </div>
+    <div class="card-body">
+      <h4>شماره تلفن</h4>
+      <p><%= member.phoneNumber %></p>
+      <h4>ایمیل</h4>
+      <p><%= member.email ? member.email : 'N/A' %></p>
+      <h4>آدرس</h4>
+      <p><%= member.address ? member.address : 'N/A' %></p>
+    </div>
+  </div>
+
+  <div class="row align-items-center">
+    <div class="col-6">
+      <h3 class="my-4 text-right">برنامه های عضو</h3>
+    </div>
+    <div class="col-6 text-left">
+      <a href="/member/add-plan/<%= member._id %>" class="btn btn-primary"
+        >افزودن برنامه جدید</a
+      >
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>برنامه</th>
+        <th>تاریخ شروع</th>
+        <th>تاریخ پایان</th>
+        <th>تعداد کل جلسات</th>
+        <th>تعداد باقی‌مانده جلسات</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% member.plans.forEach((plan) => { %> <% if (plan.end < new Date() ||
+      plan.start > new Date() || plan.remainingSessions <= 0) { %>
+      <tr class="table-danger">
+        <% } else { %>
+      </tr>
+
+      <tr class="table-success">
+        <% } %>
+        <td><%= plan.plan.name ? plan.plan.name : '_' %></td>
+        <td><%= plan.start.toLocaleString('fa-IR') %></td>
+        <td><%= plan.end.toLocaleString('fa-IR') %></td>
+        <td><%= plan.plan.sessions %></td>
+        <td><%= plan.remainingSessions %></td>
+        <td>
+          <form method="POST" action="/member/log-entry/<%= member._id %>">
+            <input
+              type="text"
+              name="planId"
+              id="planId"
+              value="<%= plan._id.toString() %>"
+              hidden
+            />
+            <button type="submit" class="btn btn-primary">ثبت ورود</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <h3>Member Activities</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>اسم برنامه</th>
+        <th>تاریخ شروع</th>
+        <th>تعداد کل جلسات</th>
+        <th>تعداد باقی‌مانده جلسات</th>
+        <th>تاریخ ورود</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% memberActivityLogs.forEach((activityLog) => { const plan =
+      member.plans.find(plan => plan._id.toString() == activityLog.memberPlan)
+      %>
+      <tr>
+        <td><%= plan.plan.name %></td>
+        <td><%= plan.start.toLocaleString('fa-IR') %></td>
+        <td><%= plan.plan.sessions %></td>
+        <td><%= plan.remainingSessions %></td>
+        <td><%= activityLog.createdAt.toLocaleString('fa-IR') %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
