@@ -42,7 +42,6 @@ app.use(express.urlencoded({ extended: true }));
 // -- request pre requirements
 app.use(requestLogHandler);
 app.use(coockiesHandler);
-
 // app.use(authenticateJWT);
 
 // -- request routers
